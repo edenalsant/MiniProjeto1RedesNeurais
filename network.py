@@ -71,6 +71,7 @@ class Network(object):
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
                 print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test))
+                print()
             else:
                 print("Epoch {} complete".format(j))
 
@@ -132,6 +133,17 @@ class Network(object):
         neuron in the final layer has the highest activation."""
         test_results = [(np.argmax(self.feedforward(x)), y)
                         for (x, y) in test_data]
+        
+        number = [0,0,0,0,0,0,0,0,0,0]
+        total = [0,0,0,0,0,0,0,0,0,0]
+        for (x,y) in tests_results:
+            total[y] += 1
+            if x == y:
+                number[x] += 1
+            
+        for i in range(10):
+            print("Taxa de acerto do {}: {}".format(i, number[i]/total[i]))
+                  
         return sum(int(x == y) for (x, y) in test_results)
 
     def cost_derivative(self, output_activations, y):
