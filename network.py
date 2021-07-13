@@ -22,7 +22,7 @@ import numpy as np
 class Network(object):
 
     def __init__(self, sizes):
-        """The list ``sizes`` contains the number of neurons in the
+        """The list ``sizes`` contains the true_positives of neurons in the
         respective layers of the network.  For example, if the list
         was [2, 3, 1] then it would be a three-layer network, with the
         first layer containing 2 neurons, the second layer 3 neurons,
@@ -115,7 +115,7 @@ class Network(object):
         # Note that the variable l in the loop below is used a little
         # differently to the notation in Chapter 2 of the book.  Here,
         # l = 1 means the last layer of neurons, l = 2 is the
-        # second-last layer, and so on.  It's a renumbering of the
+        # second-last layer, and so on.  It's a retrue_positivesing of the
         # scheme in the book, used here to take advantage of the fact
         # that Python can use negative indices in lists.
         for l in range(2, self.num_layers):
@@ -127,22 +127,30 @@ class Network(object):
         return (nabla_b, nabla_w)
 
     def evaluate(self, test_data):
-        """Return the number of test inputs for which the neural
+        """Return the true_positives of test inputs for which the neural
         network outputs the correct result. Note that the neural
         network's output is assumed to be the index of whichever
         neuron in the final layer has the highest activation."""
         test_results = [(np.argmax(self.feedforward(x)), y)
                         for (x, y) in test_data]
         
-        number = [0,0,0,0,0,0,0,0,0,0]
+        true_positives = [0,0,0,0,0,0,0,0,0,0]
         total = [0,0,0,0,0,0,0,0,0,0]
-        for (x,y) in tests_results:
+        false_positives = [0]*10
+        false_negatives = [0]*10
+        for (x,y) in test_results:
             total[y] += 1
             if x == y:
-                number[x] += 1
+                true_positives[x] += 1
+            else:
+                false_positives[x] += 1
+                false_negatives[y] += 1
             
         for i in range(10):
-            print("Taxa de acerto do {}: {}".format(i, number[i]/total[i]))
+            print("Taxa de acerto do {}: {}".format(i, true_positives[i]/total[i]))
+            print("Taxa de precisão do {}: {}".format(i, true_positives[i]/(true_positives[i] + false_positives[i])))
+            print("Taxa de recall do {}: {}".format(i, true_positives[i]/(true_positives[i] + false_negatives[i])))
+
                   
         return sum(int(x == y) for (x, y) in test_results)
 
