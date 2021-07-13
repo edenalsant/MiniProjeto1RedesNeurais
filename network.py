@@ -148,9 +148,19 @@ class Network(object):
             
         for i in range(10):
             print("Número avaliado: {}".format(i))
-            print("Taxa de acerto: {}".format(true_positives[i]/total[i]))
-            print("Taxa de precisão: {}".format(true_positives[i]/(true_positives[i] + false_positives[i])))
-            print("Taxa de recall do: {}".format(true_positives[i]/(true_positives[i] + false_negatives[i])))
+            try:
+                print("Taxa de acerto: {}".format(true_positives[i]/total[i]))
+            except Exception as e:
+                print('Falha ao calcular taxa de acerto: '+ str(e))
+            try:
+                print("Taxa de precisão: {}".format(true_positives[i]/(true_positives[i] + false_positives[i])))
+            except Exception as e:
+                print('Falha ao calcular taxa de precisão: '+ str(e))
+            try:
+                print("Taxa de recall: {}".format(true_positives[i]/(true_positives[i] + false_negatives[i])))
+            except Exception as e:
+                print('Falha ao calcular taxa de recall: '+ str(e))
+            
             print()
                   
         return sum(int(x == y) for (x, y) in test_results)
